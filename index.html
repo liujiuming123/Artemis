@@ -11,11 +11,8 @@
 </style>
 <script defer src="three-agent.js?v=1"></script>
 
-<style>
-.dynamic-matrix{grid-template-columns:repeat(2,minmax(0,1fr));min-width:0}
-@media(max-width:850px){.dynamic-matrix{min-width:0}}
-</style>
-<script defer src="dynamic.js?v=1"></script>
+
+
 <script defer src="three-crossing.js?v=1"></script>
 
 <style>
@@ -94,7 +91,7 @@
   </div>
   <p class="dataset-detail">Each sequence contains 256 synchronized timestamps, with RGB observations, motion annotations, and camera calibration. The dataset includes opposing encounters, co-directional travel, and turning and crossing interactions.</p>
 </section>
-<section id="demonstrations" class="section"><div class="section-heading"><div class="eyebrow">Visual demonstrations</div><h2>A world shared across agents</h2><p class="intro">Explore synchronized driving rollouts across agent counts, camera configurations, and dynamic environments. Demonstration videos will be added here.</p></div>
+<section id="demonstrations" class="section"><div class="section-heading"><div class="eyebrow">Visual demonstrations</div><h2>A world shared across agents</h2><p class="intro">Explore synchronized driving rollouts and cross-agent consistency across agent counts and interaction patterns.</p></div>
 <section id="two-single" class="demo-section" style="padding-top:12px"><div class="demo-head"><h2>Two agents, single camera</h2><span class="demo-index">01 / 2A · 1C</span></div><p class="intro">Two independently controlled agents observe the same evolving scene. Paired views highlight agent interactions and cross-agent consistency.</p><article class="opposing-board" aria-labelledby="opposing-title"><div class="opposing-top"><h3 id="opposing-title">Opposing interaction</h3><span>2 agents · single camera</span></div><div class="opposing-scroller" tabindex="0" aria-label="Two-agent opposing comparison; scroll horizontally on smaller screens"><div class="opposing-matrix"><div class="opposing-method">GT</div><div class="opposing-method">Artemis (Ours)</div><div class="opposing-method">Solaris public</div><div class="opposing-method">Solaris finetuned</div><div class="opposing-method">OASIS</div><div class="opposing-agent">Agent 1</div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent1-gt.jpg" aria-label="Agent 1, GT, opposing interaction"><source src="assets/videos/opposing/agent1-gt.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent1-ma-wm.jpg" aria-label="Agent 1, Artemis (Ours), opposing interaction"><source src="assets/videos/opposing/agent1-ma-wm.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent1-solaris-public.jpg" aria-label="Agent 1, Solaris public, opposing interaction"><source src="assets/videos/opposing/agent1-solaris-public.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent1-solaris-finetuned.jpg" aria-label="Agent 1, Solaris finetuned, opposing interaction"><source src="assets/videos/opposing/agent1-solaris-finetuned.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent1-oasis.jpg" aria-label="Agent 1, OASIS, opposing interaction"><source src="assets/videos/opposing/agent1-oasis.mp4" type="video/mp4"></video></div><div class="opposing-agent">Agent 2</div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent2-gt.jpg" aria-label="Agent 2, GT, opposing interaction"><source src="assets/videos/opposing/agent2-gt.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent2-ma-wm.jpg" aria-label="Agent 2, Artemis (Ours), opposing interaction"><source src="assets/videos/opposing/agent2-ma-wm.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent2-solaris-public.jpg" aria-label="Agent 2, Solaris public, opposing interaction"><source src="assets/videos/opposing/agent2-solaris-public.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent2-solaris-finetuned.jpg" aria-label="Agent 2, Solaris finetuned, opposing interaction"><source src="assets/videos/opposing/agent2-solaris-finetuned.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent2-oasis.jpg" aria-label="Agent 2, OASIS, opposing interaction"><source src="assets/videos/opposing/agent2-oasis.mp4" type="video/mp4"></video></div></div></div><div class="opposing-controls"><button type="button" id="opposing-play" disabled>Loading videos…</button><button type="button" id="opposing-restart" disabled>Restart</button><label class="sr-only" for="opposing-seek">Opposing video playback position</label><input id="opposing-seek" type="range" min="0" max="10.125" step="0.125" value="0" disabled><output id="opposing-time" for="opposing-seek">0:00 / 0:10</output></div><p id="opposing-status" class="opposing-status" role="status">GT, Artemis (Ours), Solaris public, Solaris finetuned, and OASIS share the same initial observations.</p></article><article class="opposing-board" aria-labelledby="following-title">
 <div class="opposing-top">
 <h3 id="following-title">Following interaction</h3>
@@ -303,59 +300,7 @@
   <p id="three-crossing-status" class="opposing-status" role="status">Top row: ground truth. Bottom row: Artemis (Ours). Columns show Agent 1, Agent 2, and Agent 3 in matching order.</p>
 </article>
 <p class="demo-footer">Following and crossing: three synchronized agent views, with ground truth above and Artemis below.</p></section>
-<section id="dynamic" class="demo-section"><div class="demo-head"><h2>Dynamic background</h2><span class="demo-index">04 / DYNAMICS</span></div><p class="intro">The world contains more than the controlled agents. Historical 3D observations provide motion cues for uncontrolled non-agent actors, alongside static geometry and action-controlled agent proxies.</p>
-<article class="opposing-board" aria-labelledby="dynamic-title">
-  <div class="opposing-top">
-    <h3 id="dynamic-title">Dynamic background interaction</h3>
-    <span>2 agents · single camera</span>
-  </div>
-  <div class="opposing-scroller" tabindex="0" aria-label="GT and Artemis in a dynamic background">
-    <div class="opposing-matrix dynamic-matrix">
-      <div class="opposing-method">Agent 1</div>
-      <div class="opposing-method">Agent 2</div>
-      <div class="opposing-agent">GT</div>
-      <div class="opposing-cell">
-        <video data-dynamic-video muted playsinline preload="auto"
-               poster="assets/videos/dynamic/agent1-gt.jpg"
-               aria-label="Agent 1, GT, dynamic background">
-          <source src="assets/videos/dynamic/agent1-gt.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="opposing-cell">
-        <video data-dynamic-video muted playsinline preload="auto"
-               poster="assets/videos/dynamic/agent2-gt.jpg"
-               aria-label="Agent 2, GT, dynamic background">
-          <source src="assets/videos/dynamic/agent2-gt.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="opposing-agent">Artemis (Ours)</div>
-      <div class="opposing-cell">
-        <video data-dynamic-video muted playsinline preload="auto"
-               poster="assets/videos/dynamic/agent1-artemis.jpg"
-               aria-label="Agent 1, Artemis (Ours), dynamic background">
-          <source src="assets/videos/dynamic/agent1-artemis.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="opposing-cell">
-        <video data-dynamic-video muted playsinline preload="auto"
-               poster="assets/videos/dynamic/agent2-artemis.jpg"
-               aria-label="Agent 2, Artemis (Ours), dynamic background">
-          <source src="assets/videos/dynamic/agent2-artemis.mp4" type="video/mp4">
-        </video>
-      </div>
-    </div>
-  </div>
-  <div class="opposing-controls">
-    <button type="button" id="dynamic-play" disabled>Loading videos…</button>
-    <button type="button" id="dynamic-restart" disabled>Restart</button>
-    <label class="sr-only" for="dynamic-seek">Dynamic background video playback position</label>
-    <input id="dynamic-seek" type="range" min="0" max="10.125" step="0.125" value="0" disabled>
-    <output id="dynamic-time" for="dynamic-seek">0:00 / 0:10</output>
-  </div>
-  <p id="dynamic-status" class="opposing-status" role="status">Top row: ground truth. Bottom row: Artemis (Ours). Columns show Agent 1 and Agent 2 in matching order.</p>
-</article>
-
-<p class="demo-footer">Dynamic background: synchronized agent views, with ground truth above and Artemis below.</p></section></section>
+</section>
 <section id="comparison" class="section">
 <div class="section-heading">
   <div class="eyebrow">05 / Comparisons</div>
