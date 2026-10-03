@@ -31,8 +31,23 @@
 @media(max-width:850px){.comparison-methods{min-width:960px}}
 </style>
 <script defer src="comparisons.js?v=1"></script>
+
+<style>
+.dataset-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0 0 26px}
+.dataset-stat{padding:18px 12px;text-align:center;background:var(--panel);border:1px solid var(--border);border-radius:8px}
+.dataset-stat strong{display:block;color:var(--accent);font-size:28px;line-height:1.35;font-weight:650}
+.dataset-stat span{display:block;margin-top:6px;font-size:13px;color:var(--muted)}
+.dataset-pools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:26px}
+.dataset-pools>div{border-top:1px solid var(--border);padding-top:15px;text-align:center}
+.dataset-pools strong{display:block;color:var(--accent);font-size:23px;font-weight:600;line-height:1.4}
+.dataset-pools span{display:block;color:var(--muted);font-size:14px;line-height:1.6;margin-top:5px}
+.dataset-detail{max-width:900px;margin:24px auto 0;text-align:center;color:var(--muted);font-size:15px;line-height:1.8}
+.navlinks a[href="#dataset"]{color:var(--accent)}
+@media(max-width:800px){.navlinks a:nth-child(3){display:inline}.navlinks a[href="#demonstrations"]{display:none}}
+@media(max-width:540px){.dataset-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.dataset-stat{padding:14px 8px}.dataset-stat strong{font-size:25px}.dataset-pools{grid-template-columns:1fr;gap:16px}.dataset-detail{font-size:14px;text-align:left}}
+</style>
 </head>
-<body id="top"><header class="topbar"><nav class="nav" aria-label="Main navigation"><a class="brand" href="#top">ARTEMIS</a><div class="navlinks"><a href="#abstract">Abstract</a><a href="#overview">Method</a><a href="#demonstrations">Demos</a><a href="#comparison">Comparisons</a></div></nav></header>
+<body id="top"><header class="topbar"><nav class="nav" aria-label="Main navigation"><a class="brand" href="#top">ARTEMIS</a><div class="navlinks"><a href="#abstract">Abstract</a><a href="#overview">Method</a><a href="#dataset">Dataset</a><a href="#demonstrations">Demos</a><a href="#comparison">Comparisons</a></div></nav></header>
 <main class="wrap"><section class="hero" aria-labelledby="paper-title"><div class="eyebrow">Geometry-grounded multi-agent world modeling</div>
 <h1 id="paper-title"><span class="title-name">Artemis</span>: Geometry-Grounded Multi-Agent<br>Driving World Models with Shared 3D State<br>and Progressive Memory Update</span></h1>
 <div class="authors" aria-label="Authors and affiliations">
@@ -49,6 +64,36 @@
 <section id="overview" class="section"><div class="section-heading"><div class="eyebrow">Method overview</div><h2>From shared geometry to synchronized futures</h2><p class="intro">A shared 3D map grounds each agent's perspective. Action-guided controls shape the rollout, and newly observed geometry becomes memory for the next step.</p></div>
 <figure class="pipeline-figure"><button class="figure-button" data-figure="assets/pipeline.png" aria-label="Enlarge Artemis pipeline"><img src="assets/pipeline.png" alt="Figure 4: Agent observations are reconstructed and registered into a shared global map. Action-conditioned control maps are injected through GeoAdapter into diffusion transformers with cross-agent attention. Generated keyframes update the map." width="1588" height="488" loading="lazy"></button><figcaption><strong>Overall pipeline of Artemis.</strong> Initial observations are registered into a shared 3D map. Decomposed controls for static geometry, controlled agents, and uncontrolled dynamics guide the diffusion transformer through GeoAdapter. Keyframes from generated videos progressively update the world map.</figcaption></figure>
 <div class="method-steps"><article class="method-step"><span class="step-num">01 / INITIALIZE</span><h3>One shared 3D state</h3><p>Register reconstructed observations from all agents into a common coordinate system.</p></article><article class="method-step"><span class="step-num">02 / GENERATE</span><h3>Geometry-guided rollouts</h3><p>Inject action-conditioned, decomposed control maps through GeoAdapter; exchange information with cross-agent attention.</p></article><article class="method-step"><span class="step-num">03 / UPDATE</span><h3>Progressive memory</h3><p>Fuse selected keyframes into the static world map and maintain historical observations of scene dynamics.</p></article></div></section>
+<section id="dataset" class="section" aria-labelledby="dataset-title">
+  <div class="section-heading">
+    <div class="eyebrow">Synchronized multi-agent driving data</div>
+    <h2 id="dataset-title">MA-CARLA Dataset</h2>
+    <p class="intro">MA-CARLA is a synchronized multi-agent driving dataset rendered in CARLA. It captures diverse agent interactions across urban environments, weather conditions, and static or dynamic backgrounds.</p>
+  </div>
+
+  <div class="dataset-stats" aria-label="MA-CARLA dataset statistics">
+    <div class="dataset-stat"><strong>11,283</strong><span>Rendered sequences</span></div>
+    <div class="dataset-stat"><strong>2,478</strong><span>Unique trajectories</span></div>
+    <div class="dataset-stat"><strong>8</strong><span>Towns</span></div>
+    <div class="dataset-stat"><strong>17</strong><span>Weather presets</span></div>
+  </div>
+
+  <figure class="pipeline-figure dataset-figure">
+    <button class="figure-button" data-figure="assets/ma-carla-dataset.png" aria-label="Enlarge MA-CARLA dataset figure">
+      <img src="assets/ma-carla-dataset.png"
+           alt="Figure 2: Representative MA-CARLA driving samples and the distribution of opposing, co-directional, and turning and crossing motion groups, subdivided into two-agent and three-agent scenes."
+           width="1588" height="636" loading="lazy">
+    </button>
+    <figcaption><strong>MA-CARLA dataset.</strong> Representative driving samples and distributions of interaction modes and agent counts. Motion groups may overlap; chart percentages are computed over 17,790 group assignments.</figcaption>
+  </figure>
+
+  <div class="dataset-pools" aria-label="Dataset sequence pools">
+    <div><strong>6,020</strong><span>Two-agent sequences with static backgrounds</span></div>
+    <div><strong>3,382</strong><span>Two-agent sequences with dynamic backgrounds</span></div>
+    <div><strong>1,881</strong><span>Three-agent sequences with static backgrounds</span></div>
+  </div>
+  <p class="dataset-detail">Each sequence contains 256 synchronized timestamps, with RGB observations, motion annotations, and camera calibration. The dataset includes opposing encounters, co-directional travel, and turning and crossing interactions.</p>
+</section>
 <section id="demonstrations" class="section"><div class="section-heading"><div class="eyebrow">Visual demonstrations</div><h2>A world shared across agents</h2><p class="intro">Explore synchronized driving rollouts across agent counts, camera configurations, and dynamic environments. Demonstration videos will be added here.</p></div>
 <section id="two-single" class="demo-section" style="padding-top:12px"><div class="demo-head"><h2>Two agents, single camera</h2><span class="demo-index">01 / 2A · 1C</span></div><p class="intro">Two independently controlled agents observe the same evolving scene. Paired views highlight agent interactions and cross-agent consistency.</p><article class="opposing-board" aria-labelledby="opposing-title"><div class="opposing-top"><h3 id="opposing-title">Opposing interaction</h3><span>2 agents · single camera</span></div><div class="opposing-scroller" tabindex="0" aria-label="Two-agent opposing comparison; scroll horizontally on smaller screens"><div class="opposing-matrix"><div class="opposing-method">GT</div><div class="opposing-method">Artemis (Ours)</div><div class="opposing-method">Solaris public</div><div class="opposing-method">Solaris finetuned</div><div class="opposing-method">OASIS</div><div class="opposing-agent">Agent 1</div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent1-gt.jpg" aria-label="Agent 1, GT, opposing interaction"><source src="assets/videos/opposing/agent1-gt.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent1-ma-wm.jpg" aria-label="Agent 1, Artemis (Ours), opposing interaction"><source src="assets/videos/opposing/agent1-ma-wm.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent1-solaris-public.jpg" aria-label="Agent 1, Solaris public, opposing interaction"><source src="assets/videos/opposing/agent1-solaris-public.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent1-solaris-finetuned.jpg" aria-label="Agent 1, Solaris finetuned, opposing interaction"><source src="assets/videos/opposing/agent1-solaris-finetuned.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent1-oasis.jpg" aria-label="Agent 1, OASIS, opposing interaction"><source src="assets/videos/opposing/agent1-oasis.mp4" type="video/mp4"></video></div><div class="opposing-agent">Agent 2</div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent2-gt.jpg" aria-label="Agent 2, GT, opposing interaction"><source src="assets/videos/opposing/agent2-gt.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent2-ma-wm.jpg" aria-label="Agent 2, Artemis (Ours), opposing interaction"><source src="assets/videos/opposing/agent2-ma-wm.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent2-solaris-public.jpg" aria-label="Agent 2, Solaris public, opposing interaction"><source src="assets/videos/opposing/agent2-solaris-public.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent2-solaris-finetuned.jpg" aria-label="Agent 2, Solaris finetuned, opposing interaction"><source src="assets/videos/opposing/agent2-solaris-finetuned.mp4" type="video/mp4"></video></div><div class="opposing-cell"><video data-opposing-video muted playsinline preload="auto" poster="assets/videos/opposing/agent2-oasis.jpg" aria-label="Agent 2, OASIS, opposing interaction"><source src="assets/videos/opposing/agent2-oasis.mp4" type="video/mp4"></video></div></div></div><div class="opposing-controls"><button type="button" id="opposing-play" disabled>Loading videos…</button><button type="button" id="opposing-restart" disabled>Restart</button><label class="sr-only" for="opposing-seek">Opposing video playback position</label><input id="opposing-seek" type="range" min="0" max="10.125" step="0.125" value="0" disabled><output id="opposing-time" for="opposing-seek">0:00 / 0:10</output></div><p id="opposing-status" class="opposing-status" role="status">GT, Artemis (Ours), Solaris public, Solaris finetuned, and OASIS share the same initial observations.</p></article><article class="opposing-board" aria-labelledby="following-title">
 <div class="opposing-top">
