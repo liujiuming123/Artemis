@@ -17,6 +17,20 @@
 </style>
 <script defer src="dynamic.js?v=1"></script>
 <script defer src="three-crossing.js?v=1"></script>
+
+<style>
+.comparison-methods{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.comparison-methods .demo-meta{justify-content:center;min-height:46px;padding:10px 6px;text-align:center}
+.comparison-methods .demo-meta span{font-size:13px;color:#d6e0ed;line-height:1.4}
+.comparison-methods .ours{border-color:#77e9d66b}
+.comparison-methods .ours .demo-meta span{color:var(--accent)}
+.comparison-clip{position:relative;aspect-ratio:416/512;background:#05080e;overflow:hidden}
+.comparison-clip video{display:block;width:100%;height:100%;object-fit:contain}
+.comparison-view-label{position:absolute;left:6px;padding:1px 5px;border-radius:3px;background:#080c14bb;color:#dce7f4;font-size:10px;line-height:1.6;pointer-events:none}
+.comparison-view-top{top:6px}.comparison-view-bottom{top:calc(50% + 6px)}
+@media(max-width:850px){.comparison-methods{min-width:960px}}
+</style>
+<script defer src="comparisons.js?v=1"></script>
 </head>
 <body id="top"><header class="topbar"><nav class="nav" aria-label="Main navigation"><a class="brand" href="#top">ARTEMIS</a><div class="navlinks"><a href="#abstract">Abstract</a><a href="#overview">Method</a><a href="#demonstrations">Demos</a><a href="#comparison">Comparisons</a></div></nav></header>
 <main class="wrap"><section class="hero" aria-labelledby="paper-title"><div class="eyebrow">Geometry-grounded multi-agent world modeling</div>
@@ -297,9 +311,246 @@
 </article>
 
 <p class="demo-footer">Dynamic background: synchronized agent views, with ground truth above and Artemis below.</p></section></section>
-<section id="comparison" class="section"><div class="section-heading"><div class="eyebrow">05 / Comparisons</div><h2>Comparison with other world models</h2><p class="intro">Side-by-side video slots follow the MA-CARLA evaluation in the paper: Artemis, OASIS, Solaris, and Solaris (finetuned). Each row is reserved for the same scene, initial observations, and action sequence.</p></div>
-<div class="comparison-controls" role="group" aria-label="Comparison scenario"><button type="button" aria-pressed="true" data-scenario="opposing">Opposing</button><button type="button" aria-pressed="false" data-scenario="following">Following</button><button type="button" aria-pressed="false" data-scenario="crossing">Turning & crossing</button></div>
-<div id="comparison-videos" class="comparison-grid"><article class="demo-card ours"><div class="demo-meta"><span>Artemis (Ours)</span></div><div class="video-slot" data-video="comparison-opposing-artemis" aria-label="comparison opposing artemis: video placeholder"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="3" y="6" width="26" height="20" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M9 6v20M23 6v20M3 12h6M3 20h6M23 12h6M23 20h6" stroke="currentColor" stroke-width="1.4"/></svg><span class="slot-title">Video coming soon</span><span class="slot-note">Demonstration video to be added</span></div></article><article class="demo-card "><div class="demo-meta"><span>OASIS</span></div><div class="video-slot" data-video="comparison-opposing-oasis" aria-label="comparison opposing oasis: video placeholder"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="3" y="6" width="26" height="20" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M9 6v20M23 6v20M3 12h6M3 20h6M23 12h6M23 20h6" stroke="currentColor" stroke-width="1.4"/></svg><span class="slot-title">Video coming soon</span><span class="slot-note">Demonstration video to be added</span></div></article><article class="demo-card "><div class="demo-meta"><span>Solaris</span></div><div class="video-slot" data-video="comparison-opposing-solaris" aria-label="comparison opposing solaris: video placeholder"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="3" y="6" width="26" height="20" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M9 6v20M23 6v20M3 12h6M3 20h6M23 12h6M23 20h6" stroke="currentColor" stroke-width="1.4"/></svg><span class="slot-title">Video coming soon</span><span class="slot-note">Demonstration video to be added</span></div></article><article class="demo-card "><div class="demo-meta"><span>Solaris (finetuned)</span></div><div class="video-slot" data-video="comparison-opposing-solaris-finetuned" aria-label="comparison opposing solaris finetuned: video placeholder"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="3" y="6" width="26" height="20" rx="3" stroke="currentColor" stroke-width="1.4"/><path d="M9 6v20M23 6v20M3 12h6M3 20h6M23 12h6M23 20h6" stroke="currentColor" stroke-width="1.4"/></svg><span class="slot-title">Video coming soon</span><span class="slot-note">Demonstration video to be added</span></div></article></div><p class="comparison-note" id="comparison-description" aria-live="polite">Opposing scenario · Videos coming soon</p>
+<section id="comparison" class="section">
+<div class="section-heading">
+  <div class="eyebrow">05 / Comparisons</div>
+  <h2>Comparison with other world models</h2>
+  <p class="intro">Side-by-side comparisons across opposing, following, and turning &amp; crossing scenarios. Each row compares GT, Artemis, Solaris public, Solaris finetuned, and OASIS under matched initial observations and actions.</p>
+</div>
+<article class="opposing-board comparison-scene" data-comparison-group="opposing" aria-labelledby="comparison-opposing-title">
+  <div class="opposing-top">
+    <h3 id="comparison-opposing-title">Opposing</h3>
+    <span>2 agents · single camera</span>
+  </div>
+  <div class="opposing-scroller" tabindex="0" aria-label="Opposing method comparison; scroll horizontally on smaller screens">
+    <div class="comparison-methods">
+      <div class="demo-card">
+        <div class="demo-meta"><span>GT</span></div>
+        <div class="comparison-clip">
+          <video data-comparison-video muted playsinline preload="auto"
+                 poster="assets/videos/comparisons/opposing/gt.jpg"
+                 aria-label="Opposing, GT, Agent 1 above Agent 2">
+            <source src="assets/videos/comparisons/opposing/gt.mp4" type="video/mp4">
+          </video>
+          <span class="comparison-view-label comparison-view-top" aria-hidden="true">Agent 1</span>
+          <span class="comparison-view-label comparison-view-bottom" aria-hidden="true">Agent 2</span>
+        </div>
+      </div>
+      <div class="demo-card ours">
+        <div class="demo-meta"><span>Artemis (Ours)</span></div>
+        <div class="comparison-clip">
+          <video data-comparison-video muted playsinline preload="auto"
+                 poster="assets/videos/comparisons/opposing/artemis.jpg"
+                 aria-label="Opposing, Artemis (Ours), Agent 1 above Agent 2">
+            <source src="assets/videos/comparisons/opposing/artemis.mp4" type="video/mp4">
+          </video>
+          <span class="comparison-view-label comparison-view-top" aria-hidden="true">Agent 1</span>
+          <span class="comparison-view-label comparison-view-bottom" aria-hidden="true">Agent 2</span>
+        </div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-meta"><span>Solaris public</span></div>
+        <div class="comparison-clip">
+          <video data-comparison-video muted playsinline preload="auto"
+                 poster="assets/videos/comparisons/opposing/solaris-public.jpg"
+                 aria-label="Opposing, Solaris public, Agent 1 above Agent 2">
+            <source src="assets/videos/comparisons/opposing/solaris-public.mp4" type="video/mp4">
+          </video>
+          <span class="comparison-view-label comparison-view-top" aria-hidden="true">Agent 1</span>
+          <span class="comparison-view-label comparison-view-bottom" aria-hidden="true">Agent 2</span>
+        </div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-meta"><span>Solaris finetuned</span></div>
+        <div class="comparison-clip">
+          <video data-comparison-video muted playsinline preload="auto"
+                 poster="assets/videos/comparisons/opposing/solaris-finetuned.jpg"
+                 aria-label="Opposing, Solaris finetuned, Agent 1 above Agent 2">
+            <source src="assets/videos/comparisons/opposing/solaris-finetuned.mp4" type="video/mp4">
+          </video>
+          <span class="comparison-view-label comparison-view-top" aria-hidden="true">Agent 1</span>
+          <span class="comparison-view-label comparison-view-bottom" aria-hidden="true">Agent 2</span>
+        </div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-meta"><span>OASIS</span></div>
+        <div class="comparison-clip">
+          <video data-comparison-video muted playsinline preload="auto"
+                 poster="assets/videos/comparisons/opposing/oasis.jpg"
+                 aria-label="Opposing, OASIS, Agent 1 above Agent 2">
+            <source src="assets/videos/comparisons/opposing/oasis.mp4" type="video/mp4">
+          </video>
+          <span class="comparison-view-label comparison-view-top" aria-hidden="true">Agent 1</span>
+          <span class="comparison-view-label comparison-view-bottom" aria-hidden="true">Agent 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="opposing-controls">
+    <button type="button" id="comparison-opposing-play" data-comparison-play disabled>Loading videos…</button>
+    <button type="button" id="comparison-opposing-restart" data-comparison-restart disabled>Restart</button>
+    <label class="sr-only" for="comparison-opposing-seek">Opposing playback position</label>
+    <input id="comparison-opposing-seek" data-comparison-seek type="range" min="0" max="10.125" step="0.125" value="0" disabled>
+    <output id="comparison-opposing-time" data-comparison-time for="comparison-opposing-seek">0:00 / 0:10</output>
+  </div>
+  <p class="opposing-status" data-comparison-status role="status">Each method shows Agent 1 above Agent 2. Play all synchronizes the five methods in this scenario.</p>
+</article>
+<article class="opposing-board comparison-scene" data-comparison-group="following" aria-labelledby="comparison-following-title">
+  <div class="opposing-top">
+    <h3 id="comparison-following-title">Following</h3>
+    <span>2 agents · single camera</span>
+  </div>
+  <div class="opposing-scroller" tabindex="0" aria-label="Following method comparison; scroll horizontally on smaller screens">
+    <div class="comparison-methods">
+      <div class="demo-card">
+        <div class="demo-meta"><span>GT</span></div>
+        <div class="comparison-clip">
+          <video data-comparison-video muted playsinline preload="auto"
+                 poster="assets/videos/comparisons/following/gt.jpg"
+                 aria-label="Following, GT, Agent 1 above Agent 2">
+            <source src="assets/videos/comparisons/following/gt.mp4" type="video/mp4">
+          </video>
+          <span class="comparison-view-label comparison-view-top" aria-hidden="true">Agent 1</span>
+          <span class="comparison-view-label comparison-view-bottom" aria-hidden="true">Agent 2</span>
+        </div>
+      </div>
+      <div class="demo-card ours">
+        <div class="demo-meta"><span>Artemis (Ours)</span></div>
+        <div class="comparison-clip">
+          <video data-comparison-video muted playsinline preload="auto"
+                 poster="assets/videos/comparisons/following/artemis.jpg"
+                 aria-label="Following, Artemis (Ours), Agent 1 above Agent 2">
+            <source src="assets/videos/comparisons/following/artemis.mp4" type="video/mp4">
+          </video>
+          <span class="comparison-view-label comparison-view-top" aria-hidden="true">Agent 1</span>
+          <span class="comparison-view-label comparison-view-bottom" aria-hidden="true">Agent 2</span>
+        </div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-meta"><span>Solaris public</span></div>
+        <div class="comparison-clip">
+          <video data-comparison-video muted playsinline preload="auto"
+                 poster="assets/videos/comparisons/following/solaris-public.jpg"
+                 aria-label="Following, Solaris public, Agent 1 above Agent 2">
+            <source src="assets/videos/comparisons/following/solaris-public.mp4" type="video/mp4">
+          </video>
+          <span class="comparison-view-label comparison-view-top" aria-hidden="true">Agent 1</span>
+          <span class="comparison-view-label comparison-view-bottom" aria-hidden="true">Agent 2</span>
+        </div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-meta"><span>Solaris finetuned</span></div>
+        <div class="comparison-clip">
+          <video data-comparison-video muted playsinline preload="auto"
+                 poster="assets/videos/comparisons/following/solaris-finetuned.jpg"
+                 aria-label="Following, Solaris finetuned, Agent 1 above Agent 2">
+            <source src="assets/videos/comparisons/following/solaris-finetuned.mp4" type="video/mp4">
+          </video>
+          <span class="comparison-view-label comparison-view-top" aria-hidden="true">Agent 1</span>
+          <span class="comparison-view-label comparison-view-bottom" aria-hidden="true">Agent 2</span>
+        </div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-meta"><span>OASIS</span></div>
+        <div class="comparison-clip">
+          <video data-comparison-video muted playsinline preload="auto"
+                 poster="assets/videos/comparisons/following/oasis.jpg"
+                 aria-label="Following, OASIS, Agent 1 above Agent 2">
+            <source src="assets/videos/comparisons/following/oasis.mp4" type="video/mp4">
+          </video>
+          <span class="comparison-view-label comparison-view-top" aria-hidden="true">Agent 1</span>
+          <span class="comparison-view-label comparison-view-bottom" aria-hidden="true">Agent 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="opposing-controls">
+    <button type="button" id="comparison-following-play" data-comparison-play disabled>Loading videos…</button>
+    <button type="button" id="comparison-following-restart" data-comparison-restart disabled>Restart</button>
+    <label class="sr-only" for="comparison-following-seek">Following playback position</label>
+    <input id="comparison-following-seek" data-comparison-seek type="range" min="0" max="10.125" step="0.125" value="0" disabled>
+    <output id="comparison-following-time" data-comparison-time for="comparison-following-seek">0:00 / 0:10</output>
+  </div>
+  <p class="opposing-status" data-comparison-status role="status">Each method shows Agent 1 above Agent 2. Play all synchronizes the five methods in this scenario.</p>
+</article>
+<article class="opposing-board comparison-scene" data-comparison-group="crossing" aria-labelledby="comparison-crossing-title">
+  <div class="opposing-top">
+    <h3 id="comparison-crossing-title">Turning &amp; crossing</h3>
+    <span>2 agents · single camera</span>
+  </div>
+  <div class="opposing-scroller" tabindex="0" aria-label="Turning &amp; crossing method comparison; scroll horizontally on smaller screens">
+    <div class="comparison-methods">
+      <div class="demo-card">
+        <div class="demo-meta"><span>GT</span></div>
+        <div class="comparison-clip">
+          <video data-comparison-video muted playsinline preload="auto"
+                 poster="assets/videos/comparisons/crossing/gt.jpg"
+                 aria-label="Turning &amp; crossing, GT, Agent 1 above Agent 2">
+            <source src="assets/videos/comparisons/crossing/gt.mp4" type="video/mp4">
+          </video>
+          <span class="comparison-view-label comparison-view-top" aria-hidden="true">Agent 1</span>
+          <span class="comparison-view-label comparison-view-bottom" aria-hidden="true">Agent 2</span>
+        </div>
+      </div>
+      <div class="demo-card ours">
+        <div class="demo-meta"><span>Artemis (Ours)</span></div>
+        <div class="comparison-clip">
+          <video data-comparison-video muted playsinline preload="auto"
+                 poster="assets/videos/comparisons/crossing/artemis.jpg"
+                 aria-label="Turning &amp; crossing, Artemis (Ours), Agent 1 above Agent 2">
+            <source src="assets/videos/comparisons/crossing/artemis.mp4" type="video/mp4">
+          </video>
+          <span class="comparison-view-label comparison-view-top" aria-hidden="true">Agent 1</span>
+          <span class="comparison-view-label comparison-view-bottom" aria-hidden="true">Agent 2</span>
+        </div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-meta"><span>Solaris public</span></div>
+        <div class="comparison-clip">
+          <video data-comparison-video muted playsinline preload="auto"
+                 poster="assets/videos/comparisons/crossing/solaris-public.jpg"
+                 aria-label="Turning &amp; crossing, Solaris public, Agent 1 above Agent 2">
+            <source src="assets/videos/comparisons/crossing/solaris-public.mp4" type="video/mp4">
+          </video>
+          <span class="comparison-view-label comparison-view-top" aria-hidden="true">Agent 1</span>
+          <span class="comparison-view-label comparison-view-bottom" aria-hidden="true">Agent 2</span>
+        </div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-meta"><span>Solaris finetuned</span></div>
+        <div class="comparison-clip">
+          <video data-comparison-video muted playsinline preload="auto"
+                 poster="assets/videos/comparisons/crossing/solaris-finetuned.jpg"
+                 aria-label="Turning &amp; crossing, Solaris finetuned, Agent 1 above Agent 2">
+            <source src="assets/videos/comparisons/crossing/solaris-finetuned.mp4" type="video/mp4">
+          </video>
+          <span class="comparison-view-label comparison-view-top" aria-hidden="true">Agent 1</span>
+          <span class="comparison-view-label comparison-view-bottom" aria-hidden="true">Agent 2</span>
+        </div>
+      </div>
+      <div class="demo-card">
+        <div class="demo-meta"><span>OASIS</span></div>
+        <div class="comparison-clip">
+          <video data-comparison-video muted playsinline preload="auto"
+                 poster="assets/videos/comparisons/crossing/oasis.jpg"
+                 aria-label="Turning &amp; crossing, OASIS, Agent 1 above Agent 2">
+            <source src="assets/videos/comparisons/crossing/oasis.mp4" type="video/mp4">
+          </video>
+          <span class="comparison-view-label comparison-view-top" aria-hidden="true">Agent 1</span>
+          <span class="comparison-view-label comparison-view-bottom" aria-hidden="true">Agent 2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="opposing-controls">
+    <button type="button" id="comparison-crossing-play" data-comparison-play disabled>Loading videos…</button>
+    <button type="button" id="comparison-crossing-restart" data-comparison-restart disabled>Restart</button>
+    <label class="sr-only" for="comparison-crossing-seek">Turning &amp; crossing playback position</label>
+    <input id="comparison-crossing-seek" data-comparison-seek type="range" min="0" max="10.125" step="0.125" value="0" disabled>
+    <output id="comparison-crossing-time" data-comparison-time for="comparison-crossing-seek">0:00 / 0:10</output>
+  </div>
+  <p class="opposing-status" data-comparison-status role="status">Each method shows Agent 1 above Agent 2. Play all synchronizes the five methods in this scenario.</p>
+</article>
 <div class="table-shell">
 <table>
 <caption>MA-CARLA: quantitative results from Table 1</caption>
